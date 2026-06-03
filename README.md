@@ -85,7 +85,7 @@ python3 darkbuster.py -u http://target.com -x .php,.html,.bak
 ### Use Specific Wordlist
 
 ```bash
-python3 darkbuster.py -u http://target.com -w wordlists/admin-panels.txt
+python3 darkbuster.py -u http://target.com -w admin-panels.txt
 ```
 
 ### Fast Scan with More Threads
@@ -109,7 +109,7 @@ python3 darkbuster.py -u https://target.com --cookie "session=abc123"
 ### Full Options
 
 ```bash
-python3 darkbuster.py -u http://target.com -w wordlists/common.txt -x .php,.html -t 30 -o output.txt
+python3 darkbuster.py -u http://target.com -w common.txt -x .php,.html -t 30 -o output.txt
 ```
 
 ### List All Available Wordlists
