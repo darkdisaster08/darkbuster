@@ -75,16 +75,48 @@ stop_event    = threading.Event()
 #  HELPERS
 # ─────────────────────────────────────────
 def get_wordlist_path(name):
-    base = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(base, "wordlists", name)
+    base = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)),
+        "wordlists"
+    )
+
+    if os.path.isabs(name):
+        return name
+
+    if name.startswith("wordlists/"):
+        name = name[len("wordlists/"):]
+
+    return os.path.join(base, name)
 
 def load_wordlist(path):
     if not os.path.exists(path):
         print(red(f"[!] Wordlist not found: {path}"))
+
+        wl_dir = os.path.join(
+            os.path.dirname(os.path.realpath(__file__)),
+            "wordlists"
+        )
+
+        print(yellow("\nAvailable wordlists:\n"))
+
+        if os.path.isdir(wl_dir):
+            for root, _, files in os.walk(wl_dir):
+                for file in files:
+                    if file.endswith(".txt"):
+                        rel = os.path.relpath(
+                            os.path.join(root, file),
+                            wl_dir
+                        )
+                        print(f"  - {rel}")
+
         sys.exit(1)
+
     with open(path, "r", encoding="utf-8", errors="ignore") as f:
-        words = [line.strip() for line in f if line.strip() and not line.startswith("#")]
-    return words
+        return [
+            line.strip()
+            for line in f
+            if line.strip() and not line.startswith("#")
+        ]
 
 def normalize_url(url):
     return url.rstrip("/")
@@ -159,20 +191,44 @@ def show_progress(total, start_time):
 #  AVAILABLE WORDLISTS
 # ─────────────────────────────────────────
 def list_wordlists():
-    base = os.path.join(os.path.dirname(os.path.abspath(__file__)), "wordlists")
+    base = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)),
+        "wordlists"
+    )
+
     print(bold("\n[*] Available Wordlists:\n"))
-    for root, dirs, files in os.walk(base):
-        level = root.replace(base, "").count(os.sep)
-        indent = "  " * level
-        folder = os.path.basename(root)
-        if level > 0:
-            print(f"{indent}{cyan(folder)}/")
-        for f in files:
-            if f.endswith(".txt"):
-                fpath = os.path.join(root, f)
-                count = sum(1 for _ in open(fpath, encoding="utf-8", errors="ignore"))
-                subindent = "  " * (level + 1)
-                print(f"{subindent}{green(f)} ({count} words)")
+
+    if not os.path.isdir(base):
+        print(red("[!] wordlists directory not found"))
+        return
+
+    for root, _, files in os.walk(base):
+        for file in sorted(files):
+            if file.endswith(".txt"):
+                rel = os.path.relpath(
+                    os.path.join(root, file),
+                    base
+                )
+
+                fpath = os.path.join(root, file)
+
+                try:
+                    count = sum(
+                        1 for _
+                        in open(
+                            fpath,
+                            encoding="utf-8",
+                            errors="ignore"
+                        )
+                    )
+                except:
+                    count = 0
+
+                print(
+                    f"{green(rel)} "
+                    f"{yellow(f'({count} entries)')}"
+                )
+
     print()
 
 # ─────────────────────────────────────────
