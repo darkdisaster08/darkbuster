@@ -16,7 +16,8 @@ if ! command -v python3 &> /dev/null; then
 fi
 
 echo "[*] Installing dependencies..."
-pip3 install -r requirements.txt --quiet
+python3 -m pip install -r requirements.txt --quiet --break-system-packages 2>/dev/null || \
+python3 -m pip install -r requirements.txt --quiet
 
 echo "[*] Setting permissions..."
 chmod +x darkbuster.py
