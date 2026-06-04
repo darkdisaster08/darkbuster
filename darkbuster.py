@@ -4,6 +4,8 @@ DarkBuster - Advanced Web Directory & File Bruteforcer
 Author: Manjeet Thakur (darkdisaster08)
 GitHub: https://github.com/darkdisaster08
 Wordlists updated: May 2026
+VERSION = "1.1.1"
+darkbuster --version
 """
 
 import argparse
@@ -139,43 +141,69 @@ signal.signal(signal.SIGINT, signal_handler)
 # ─────────────────────────────────────────
 def scanner(queue, base_url, extensions, timeout, status_codes, output_file, session):
     global scanned_count
+
     while not queue.empty() and not stop_event.is_set():
         word = queue.get()
+
         targets = [f"{base_url}/{word}"]
+
         for ext in extensions:
             targets.append(f"{base_url}/{word}{ext}")
 
         for target in targets:
             if stop_event.is_set():
                 break
+
             try:
-                resp = session.get(target, timeout=timeout, allow_redirects=False, verify=False)
+                resp = session.get(
+                    target,
+                    timeout=timeout,
+                    allow_redirects=False,
+                    verify=False
+                )
+
                 with lock:
                     scanned_count += 1
+
                     if resp.status_code in status_codes:
                         size = len(resp.content)
-                        msg = f"[{status_color(resp.status_code)}] {target} (Size: {size})"
+
+                        msg = (
+                            f"[{status_color(resp.status_code)}] "
+                            f"{target} (Size: {size})"
+                        )
+
                         print(msg)
-                        found_paths.append(f"[{resp.status_code}] {target} (Size: {size})")
+
+                        found_paths.append(
+                            f"[{resp.status_code}] {target} (Size: {size})"
+                        )
+
                         if output_file:
                             with open(output_file, "a") as f:
-                                f.write(f"[{resp.status_code}] {target} (Size: {size})\n")
+                                f.write(
+                                    f"[{resp.status_code}] "
+                                    f"{target} (Size: {size})\n"
+                                )
+
             except requests.exceptions.ConnectionError:
                 with lock:
                     scanned_count += 1
+
             except requests.exceptions.Timeout:
                 with lock:
                     scanned_count += 1
+
             except Exception:
                 with lock:
                     scanned_count += 1
-        queue.task_done()
+
+            queue.task_done()
 
 # ─────────────────────────────────────────
 #  PROGRESS DISPLAY
 # ─────────────────────────────────────────
 def show_progress(total, start_time):
-    while not stop_event.is_set():
         with lock:
             count = scanned_count
         elapsed = time.time() - start_time
