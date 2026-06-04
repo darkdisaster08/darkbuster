@@ -215,13 +215,19 @@ darkbuster/
 ├── README.md               # Documentation
 └── wordlists/
     ├── common.txt          # General purpose
+    ├── common-large.txt    # Advance purpose
     ├── admin-panels.txt    # Admin paths
     ├── api-endpoints.txt   # API endpoints
     ├── backup-files.txt    # Backup files
     ├── subdomains.txt      # Subdomain names
     └── technology/
+        ├── django.txt      # Django paths
+        ├── drupal.txt      # Drupal paths
+        ├── laravel.txt     # Laravel paths
         ├── wordpress.txt   # WordPress paths
-        └── php.txt         # PHP files
+        ├── php.txt         # PHP files
+        └── wordpress.txt   # Wordpress files
+
 ```
 
 ---
