@@ -1,0 +1,5 @@
+user/login
+admin
+sites/default
+modules
+themes
