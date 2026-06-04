@@ -1,0 +1,6 @@
+artisan
+storage
+vendor
+public
+login
+register
