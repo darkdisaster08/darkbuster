@@ -142,14 +142,18 @@ python3 darkbuster.py --list-wordlists
 All wordlists are updated to **May 2026** and carefully curated for real-world pentesting.
 
 | Wordlist | Entries | Description |
-|----------|---------|-------------|
+|----------|----------|-------------|
 | `common.txt` | 300+ | Most common web directories and files |
-| `admin-panels.txt` | 110+ | Admin panel paths across all major CMS |
-| `api-endpoints.txt` | 120+ | REST API and GraphQL endpoints |
-| `backup-files.txt` | 130+ | Backup and sensitive file names |
+| `common-large.txt` | 1000+ | Extended discovery wordlist for deeper scans |
+| `admin-panels.txt` | 110+ | Admin panel paths across major CMS platforms |
+| `api-endpoints.txt` | 120+ | REST API, GraphQL, and common API endpoints |
+| `backup-files.txt` | 130+ | Backup, archive, and sensitive file names |
 | `subdomains.txt` | 100+ | Common subdomain names |
 | `technology/wordpress.txt` | 40+ | WordPress specific paths |
-| `technology/php.txt` | 60+ | PHP application files |
+| `technology/php.txt` | 60+ | PHP application files and endpoints |
+| `technology/django.txt` | 20+ | Common Django framework paths |
+| `technology/drupal.txt` | 20+ | Common Drupal CMS paths |
+| `technology/laravel.txt` | 20+ | Laravel framework paths and files |
 
 ### What Makes These Wordlists Different?
 
