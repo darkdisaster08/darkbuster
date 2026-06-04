@@ -204,17 +204,21 @@ def scanner(queue, base_url, extensions, timeout, status_codes, output_file, ses
 #  PROGRESS DISPLAY
 # ─────────────────────────────────────────
 def show_progress(total, start_time):
-        with lock:
-            count = scanned_count
-        elapsed = time.time() - start_time
-        speed = int(count / elapsed) if elapsed > 0 else 0
-        remaining = total - count
-        eta = int(remaining / speed) if speed > 0 else 0
-        print(f"\r{cyan(f'Progress: {count}/{total} | Speed: {speed} req/s | ETA: {eta}s')}   ", end="", flush=True)
-        if count >= total:
-            break
-        time.sleep(0.5)
+    with lock:
+        count = scanned_count
 
+    elapsed = time.time() - start_time
+    speed = int(count / elapsed) if elapsed > 0 else 0
+    remaining = total - count
+    eta = int(remaining / speed) if speed > 0 else 0
+
+    print(
+        f"\r{cyan(f'Progress: {count}/{total} | Speed: {speed} req/s | ETA: {eta}s')}",
+        end="",
+        flush=True
+    )
+
+    time.sleep(0.5)
 # ─────────────────────────────────────────
 #  AVAILABLE WORDLISTS
 # ─────────────────────────────────────────
