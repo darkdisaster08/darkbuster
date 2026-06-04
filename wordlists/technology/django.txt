@@ -1,0 +1,6 @@
+admin
+static
+media
+api
+accounts/login
+accounts/logout
